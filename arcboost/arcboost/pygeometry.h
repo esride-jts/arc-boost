@@ -27,11 +27,19 @@
 #define PYGEOMETRY_H
 
 #include <boost/geometry.hpp>
+#include <vector>
 
 typedef boost::geometry::model::d2::point_xy<double> point_2d;
 struct point2d {
 
+	/*!
+	\brief Creates a new two dimensional point using x and y.
+	*/
 	point2d static from_xy(double x, double y);
+
+	/*!
+	* \brief Creats a new two dimensional point using the WKT representation.
+	*/
 	point2d static from_wkt(const std::string& wkt);
 	
 	double x() const;
@@ -41,6 +49,24 @@ private:
 	point2d(point_2d point);
 
 	point_2d _point;
+};
+
+
+
+struct polygon2d {
+
+	/*!
+	\brief Creates a new two dimensional polygon using x and y coordinates.
+	*/
+	polygon2d static from_xy(const std::vector<double>& x, const std::vector<double>& y);
+
+	const std::vector<point2d>& points() const;
+	size_t point_count() const;
+
+private:
+	polygon2d(std::vector<point2d> &&points);
+
+	std::vector<point2d> _points;
 };
 
 #endif

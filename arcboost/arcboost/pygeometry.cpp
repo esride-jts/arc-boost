@@ -56,3 +56,37 @@ double point2d::y() const
 {
 	return _point.y();
 }
+
+
+
+
+polygon2d::polygon2d(vector<point2d>&& points) : _points(std::move(points))
+{}
+
+polygon2d polygon2d::from_xy(const vector<double>& x, const vector<double>& y)
+{
+	if (x.size() != y.size())
+	{
+		vector<point2d> empty;
+		empty.reserve(0);
+		return polygon2d(move(empty));
+	}
+
+	vector<point2d> points;
+	points.reserve(x.size());
+	for (size_t index = 0, count = x.size(); index < count; index++)
+	{
+		points.push_back(point2d::from_xy(x.at(index), y.at(index)));
+	}
+	return polygon2d(move(points));
+}
+
+const vector<point2d>& polygon2d::points() const
+{
+	return _points;
+}
+
+size_t polygon2d::point_count() const
+{
+	return _points.size();
+}
