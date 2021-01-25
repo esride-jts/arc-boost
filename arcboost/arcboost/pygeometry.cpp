@@ -35,6 +35,11 @@ using namespace std;
 point2d::point2d(point_2d point) : _point(point)
 {}
 
+point2d point2d::from_xy(double x, double y)
+{
+	return point2d(point_2d(x, y));
+}
+
 point2d point2d::from_wkt(const string& wkt)
 {
 	point_2d point;

@@ -31,6 +31,7 @@
 typedef boost::geometry::model::d2::point_xy<double> point_2d;
 struct point2d {
 
+	point2d static from_xy(double x, double y);
 	point2d static from_wkt(const std::string& wkt);
 	
 	double x() const;

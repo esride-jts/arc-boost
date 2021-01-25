@@ -23,11 +23,37 @@
 // See <https://developers.arcgis.com/> for further information.
 //
 
-#include "pygeometry.h"
 #include "arcboost.h"
+
+#include "pygeometry.h"
+
+#include <vector>
 
 using namespace boost::geometry;
 using namespace std;
+
+point2d point_from_xy(double x, double y)
+{
+	return point2d::from_xy(x, y);
+}
+
+vector<point2d> points_from_xy(const vector<double> &x, const vector<double> &y)
+{
+	if (x.size() != y.size())
+	{
+		vector<point2d> empty;
+		empty.reserve(0);
+		return empty;
+	}
+
+	vector<point2d> points;
+	points.reserve(x.size());
+	for (size_t index = 0, count = x.size(); index < count; index++)
+	{
+		points.push_back(point_from_xy(x.at(index), y.at(index)));
+	}
+	return points;
+}
 
 point2d point_from_wkt(const string &wkt)
 {
@@ -42,6 +68,8 @@ PYBIND11_MODULE(arcboost, pymodule)
 	pybind11::class_<point2d>(pymodule, "Two dimensional point")
 		.def("x", &point2d::x)
 		.def("y", &point2d::y);
+	pymodule.def("point_from_xy", &point_from_xy, "Creates a point using x and y.");
+	pymodule.def("points_from_xy", &points_from_xy, "Creates an array of points using x and y.");
 	pymodule.def("point_from_wkt", &point_from_wkt, "Creates a point from a WKT represenation.");
 }
 
