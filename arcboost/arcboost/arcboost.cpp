@@ -73,13 +73,13 @@ point2d point_from_wkt(const string &wkt)
 }
 
 /*!
-\brief Constructs the convex hull of points represented as x and y coordinates.
+\brief Constructs the convex hull of two dimensional points represented as x and y coordinates.
 The convex hull is returned as vector or tuples/pairs of x and y coordinates.
 \details These tuple instances can be used from Python.
 */
 vector<pybind11::tuple> convex_hull(const vector<double>& x, const vector<double>& y)
 {
-	polygon2d hull_polygon = polygon2d::from_xy(x, y);
+	polygon2d hull_polygon = geometry_engine::convex_hull(x, y);
 	vector<pybind11::tuple> hull_tuple;
 	hull_tuple.reserve(hull_polygon.point_count());
 	for (const point2d &point : hull_polygon.points())
@@ -105,7 +105,7 @@ PYBIND11_MODULE(arcboost, pymodule)
 	pymodule.def("point_from_xy", &point_from_xy, "Creates a point using x and y.");
 	pymodule.def("points_from_xy", &points_from_xy, "Creates an array of points using x and y.");
 	pymodule.def("point_from_wkt", &point_from_wkt, "Creates a point from a WKT represenation.");
-	pymodule.def("convex_hull", &convex_hull, "Constructs the convex hull of points represented as x and y coordinates.");
+	pymodule.def("convex_hull", &convex_hull, "Constructs the convex hull of two dimensional points represented as x and y coordinates.");
 }
 
 int main()

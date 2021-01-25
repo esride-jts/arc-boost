@@ -30,6 +30,10 @@
 #include <vector>
 
 typedef boost::geometry::model::d2::point_xy<double> point_2d;
+typedef boost::geometry::model::polygon<point_2d> polygon_2d;
+typedef boost::geometry::model::multi_point<point_2d> multipoint_2d;
+
+
 struct point2d {
 
 	/*!
@@ -60,6 +64,11 @@ struct polygon2d {
 	*/
 	polygon2d static from_xy(const std::vector<double>& x, const std::vector<double>& y);
 
+	/*!
+	\brief Creates an empty two dimensional polygon.
+	*/
+	polygon2d static empty();
+
 	const std::vector<point2d>& points() const;
 	size_t point_count() const;
 
@@ -67,6 +76,19 @@ private:
 	polygon2d(std::vector<point2d> &&points);
 
 	std::vector<point2d> _points;
+
+	friend class geometry_engine;
+};
+
+
+
+class geometry_engine {
+
+public:
+	/*!
+	\brief Constructs the convex hull of two dimensional points represented as x and y coordinates.
+	*/
+	static polygon2d convex_hull(const std::vector<double>& x, const std::vector<double>& y);
 };
 
 #endif

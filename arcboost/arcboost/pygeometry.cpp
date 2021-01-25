@@ -67,18 +67,24 @@ polygon2d polygon2d::from_xy(const vector<double>& x, const vector<double>& y)
 {
 	if (x.size() != y.size())
 	{
-		vector<point2d> empty;
-		empty.reserve(0);
-		return polygon2d(move(empty));
+		return empty();
 	}
 
+	size_t coordinate_count = x.size();
 	vector<point2d> points;
-	points.reserve(x.size());
-	for (size_t index = 0, count = x.size(); index < count; index++)
+	points.reserve(coordinate_count);
+	for (size_t index = 0, count = coordinate_count; index < count; index++)
 	{
 		points.push_back(point2d::from_xy(x.at(index), y.at(index)));
 	}
 	return polygon2d(move(points));
+}
+
+polygon2d polygon2d::empty()
+{
+	vector<point2d> empty;
+	empty.reserve(0);
+	return polygon2d(move(empty));
 }
 
 const vector<point2d>& polygon2d::points() const
@@ -89,4 +95,35 @@ const vector<point2d>& polygon2d::points() const
 size_t polygon2d::point_count() const
 {
 	return _points.size();
+}
+
+
+
+polygon2d geometry_engine::convex_hull(const std::vector<double>& x, const std::vector<double>& y)
+{
+	if (x.size() != y.size())
+	{
+		return polygon2d::empty();
+	}
+
+	size_t coordinate_count = x.size();
+	multipoint_2d multipoint;
+	multipoint.reserve(coordinate_count);
+	for (size_t index = 0; index < coordinate_count; index++)
+	{
+		append(multipoint, point_2d(x.at(index), y.at(index)));
+	}
+
+	polygon_2d hull_2d;
+	boost::geometry::convex_hull(multipoint, hull_2d);
+	vector<point_2d> &outer_ring = hull_2d.outer();
+	vector<point2d> hull_points;
+	size_t hull_point_count = outer_ring.size();
+	hull_points.reserve(hull_point_count);
+	for (size_t index = 0; index < hull_point_count; index++)
+	{
+		point_2d hull_point_2d = outer_ring.at(index);
+		hull_points.push_back(point2d::from_xy(hull_point_2d.x(), hull_point_2d.y()));
+	}
+	return polygon2d(move(hull_points));
 }
