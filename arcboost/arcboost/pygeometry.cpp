@@ -1,4 +1,4 @@
-﻿// arcboost is a C++/Python module for geospatial workflows.
+// arcboost is a C++/Python module for geospatial workflows.
 // Copyright (C) 2021 Esri Deutschland GmbH
 // Jan Tschada (j.tschada@esri.de)
 //
@@ -23,8 +23,31 @@
 // See <https://developers.arcgis.com/> for further information.
 //
 
-#pragma once
+#include "pygeometry.h"
 
-#include <pybind11/pybind11.h>
+#include <boost/geometry/geometries/point_xy.hpp>
+#include <boost/geometry/geometries/linestring.hpp>
+#include <boost/geometry/geometries/polygon.hpp>
 
-#include <iostream>
+using namespace boost::geometry;
+using namespace std;
+
+point2d::point2d(point_2d point) : _point(point)
+{}
+
+point2d point2d::from_wkt(const string& wkt)
+{
+	point_2d point;
+	read_wkt(wkt, point);
+	return point2d(point);
+}
+
+double point2d::x() const
+{
+	return _point.x();
+}
+
+double point2d::y() const
+{
+	return _point.y();
+}
