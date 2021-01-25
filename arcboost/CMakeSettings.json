@@ -9,7 +9,29 @@
       "installRoot": "${projectDir}\\out\\install\\${name}",
       "cmakeCommandArgs": "",
       "buildCommandArgs": "",
-      "ctestCommandArgs": ""
+      "ctestCommandArgs": "",
+      "variables": [
+        {
+          "name": "CONFIGURATION_NAME",
+          "value": "DEBUG",
+          "type": "STRING"
+        },
+        {
+          "name": "PYBIND11_PYTHON_VERSION",
+          "value": "3.6",
+          "type": "STRING"
+        },
+        {
+          "name": "PYTHON_EXECUTABLE",
+          "value": "C:/Program Files/ArcGIS/Pro/bin/Python/envs/arcgispro-py3/python.exe",
+          "type": "FILEPATH"
+        },
+        {
+          "name": "pybind11_DIR",
+          "value": "$ENV{vcpkgRoot}/x64-windows/share/cmake/pybind11",
+          "type": "PATH"
+        }
+      ]
     }
   ]
 }
